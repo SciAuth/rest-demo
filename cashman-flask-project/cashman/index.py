@@ -16,11 +16,12 @@ import json
 from functools import wraps
 
 from flask import _request_ctx_stack
+from flask_cors import CORS, cross_origin
 #from flask_cors import cross_origin
-#from jose import jwt
+from jose import jwt
 from six.moves.urllib.request import urlopen
 
-AUTH0_DOMAIN = 'YOUR_DOMAIN'
+AUTH0_DOMAIN = 'dev-7jgsf20u.us.auth0.com'
 API_IDENTIFIER = 'https://cashman/api'
 ALGORITHMS = ["RS256"]
 
@@ -90,7 +91,7 @@ def requires_auth(f):
                     token,
                     rsa_key,
                     algorithms=ALGORITHMS,
-                    audience=API_AUDIENCE,
+                    audience=API_IDENTIFIER,
                     issuer="https://"+AUTH0_DOMAIN+"/"
                 )
             except jwt.ExpiredSignatureError:
@@ -136,19 +137,20 @@ expenses = [
 
 
 @app.route('/incomes/private')
+@cross_origin(headers=["Content-Type", "Authorization"])
 @requires_auth
 def get_incomes():
   return jsonify(incomes)
 
 
 @app.route('/incomes/private', methods=['POST'])
-@requires_auth
+#@requires_auth
 def add_income():
   incomes.append(request.get_json())
   return '', 204
 
 @app.route('/incomes/private', methods=['PUT'])
-@requires_auth
+#@requires_auth
 def replace_income():
   incomes.clear()
   incomes.append(request.get_json())

@@ -9,6 +9,10 @@ authlib = "*"
 requests = "*"
 jose = "*"
 six = "*"
+"flask.ext" = "*"
+flask-cors = "*"
+crypto = "*"
+python-jose = "*"
 
 [dev-packages]
 
