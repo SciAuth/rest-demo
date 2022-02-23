@@ -1,28 +1,18 @@
-from flask import Flask, jsonify, request
-
-app = Flask(__name__)
-
 # /server.py
-#from flask import redirect
-#from flask import render_template
-#from flask import session
-#from flask import url_for
-from authlib.integrations.flask_client import OAuth
-#from six.moves.urllib.parse import urlencode
-
-#import constants
 
 import json
+from six.moves.urllib.request import urlopen
 from functools import wraps
 
-from flask import _request_ctx_stack
-#from flask_cors import cross_origin
-#from jose import jwt
-from six.moves.urllib.request import urlopen
+from flask import Flask, request, jsonify, _request_ctx_stack
+from flask_cors import cross_origin
+from jose import jwt
 
 AUTH0_DOMAIN = 'YOUR_DOMAIN'
-API_IDENTIFIER = 'https://cashman/api'
+API_AUDIENCE = YOUR_API_AUDIENCE
 ALGORITHMS = ["RS256"]
+
+APP = Flask(__name__)
 
 # Error handler
 class AuthError(Exception):
@@ -30,7 +20,7 @@ class AuthError(Exception):
         self.error = error
         self.status_code = status_code
 
-@app.errorhandler(AuthError)
+@APP.errorhandler(AuthError)
 def handle_auth_error(ex):
     response = jsonify(ex.error)
     response.status_code = ex.status_code
@@ -126,90 +116,3 @@ def requires_scope(required_scope):
                 if token_scope == required_scope:
                     return True
     return False
-
-incomes = [
-  { 'description': 'salary', 'amount': 5000 }
-]
-expenses = [
-  { 'description': 'pizza', 'amount': 50 }
-]
-
-
-@app.route('/incomes/private')
-@requires_auth
-def get_incomes():
-  return jsonify(incomes)
-
-
-@app.route('/incomes/private', methods=['POST'])
-@requires_auth
-def add_income():
-  incomes.append(request.get_json())
-  return '', 204
-
-@app.route('/incomes/private', methods=['PUT'])
-@requires_auth
-def replace_income():
-  incomes.clear()
-  incomes.append(request.get_json())
-  return '', 204
-
-@app.route('/incomes/private-scoped', methods=['DELETE'])
-@requires_auth
-def remove_income():
-    if requires_scope("read:messages"):
-        incomes.pop()
-        return '', 204
-    raise AuthError({
-        "code": "Unauthorized",
-        "description": "You don't have access to this resource"
-    }, 403)
-
-@app.route('/expenses/public')
-def get_expenses():
-  return jsonify(expenses)
-
-
-@app.route('/expenses/public', methods=['POST'])
-def add_expense():
-  expenses.append(request.get_json())
-  return '', 204
-
-@app.route('/expenses/public', methods=['PUT'])
-def replace_expense():
-  expenses.clear()
-  expenses.append(request.get_json())
-  return '', 204
-
-@app.route('/expenses/public', methods=['DELETE'])
-def remove_expense():
-  expenses.pop()
-  return '', 204
-
-# This doesn't need authentication
-# @APP.route("/api/public")
-# @cross_origin(headers=["Content-Type", "Authorization"])
-# def public():
-#     response = "Hello from a public endpoint! You don't need to be authenticated to see this."
-#     return jsonify(message=response)
-
-# # This needs authentication
-# @APP.route("/api/private")
-# @cross_origin(headers=["Content-Type", "Authorization"])
-# @requires_auth
-# def private():
-#     response = "Hello from a private endpoint! You need to be authenticated to see this."
-#     return jsonify(message=response)
-
-# # This needs authorization
-# @APP.route("/api/private-scoped")
-# @cross_origin(headers=["Content-Type", "Authorization"])
-# @requires_auth
-# def private_scoped():
-#     if requires_scope("read:messages"):
-#         response = "Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this."
-#         return jsonify(message=response)
-#     raise AuthError({
-#         "code": "Unauthorized",
-#         "description": "You don't have access to this resource"
-#     }, 403)

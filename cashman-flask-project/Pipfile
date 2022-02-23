@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 flask = "*"
+authlib = "*"
+requests = "*"
+jose = "*"
+six = "*"
 
 [dev-packages]
 
