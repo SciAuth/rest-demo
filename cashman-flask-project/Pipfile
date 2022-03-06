@@ -13,6 +13,7 @@ six = "*"
 flask-cors = "*"
 crypto = "*"
 python-jose = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
