@@ -2,7 +2,8 @@
 """
 from flask import Flask, jsonify, request
 from flask_cors import cross_origin
-from cashman.auth0_decorator import AuthError, requires_auth, requires_scope
+from utils.auth0_decorator import requires_auth, requires_scope
+from utils.AuthError import AuthError
 
 app = Flask(__name__)
 

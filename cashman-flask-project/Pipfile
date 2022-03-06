@@ -14,6 +14,7 @@ flask-cors = "*"
 crypto = "*"
 python-jose = "*"
 python-dotenv = "*"
+scitokens = "*"
 
 [dev-packages]
 
