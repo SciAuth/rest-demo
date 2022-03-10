@@ -1,9 +1,10 @@
-"""Python Flask RESTful API Auth0 integration example
+"""Python Flask RESTful APIs with Auth0 & SciAuth integration
 """
 from flask import Flask, jsonify, request
 from flask_cors import cross_origin
 from utils.auth0_decorator import requires_auth, requires_scope
 from utils.AuthError import AuthError
+from utils.scitokens_protect import protect
 
 app = Flask(__name__)
 
@@ -66,6 +67,7 @@ def add_income():
     return "", 204
 
 
+# TODO: #4 let user change specific item rather than delete the whole list
 @app.route("/incomes/private", methods=["PUT"])
 @requires_auth
 def replace_income():
@@ -74,6 +76,7 @@ def replace_income():
     return "", 204
 
 
+# TODO: #5 add scope for other actions
 @app.route("/incomes/private", methods=["DELETE"])
 @requires_auth
 def remove_income():
@@ -88,3 +91,30 @@ def remove_income():
         },
         403,
     )
+
+
+"""
+Properties should be accessed with authorization from SciToken
+"""
+properties = [{"car": 2000, "house": 100000}]
+
+
+@app.route("/properties", methods=["GET"])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@protect(
+    audience="https://demo.scitokens.org",
+    issuer=["https://demo.scitokens.org"],
+)
+def get_properties():
+    return jsonify(properties)
+
+
+# TODO:let #6 user delete a specific item rather than the earliest item being added
+@app.route("/properties", methods=["DELETE"])
+@protect(
+    audience="https://demo.scitokens.org",
+    scope="delete:/properties",
+    issuer=["https://demo.scitokens.org"],
+)
+def remove_properties():
+    properties.pop()
