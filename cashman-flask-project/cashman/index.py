@@ -89,11 +89,13 @@ def handle_auth_error(ex):
     return response
 
 
-@app.route("/incomes/private", methods=["GET"])
+@app.route("/incomes/<string:Name>", methods=["GET"])
 @cross_origin(headers=["Content-Type", "Authorization"])
 @requires_auth
 def get_incomes():
-    return jsonify(incomes)
+    scope = "get:" + "/incomes/" + Name 
+    if requires_scope(scope):
+        return jsonify(incomes)
 
 
 @app.route("/incomes/private", methods=["POST"])
