@@ -18,6 +18,9 @@ AUTH0_DOMAIN = env.get("AUTH0_DOMAIN")
 API_IDENTIFIER = env.get("API_IDENTIFIER")
 ALGORITHMS = ["RS256"]
 
+# TODO: #2 Modify decorator to allow dynamic scope in format
+# <action>:/<items' list>/<user>/<item>, e.g. delete:/properties/linh/car
+
 # Format error response and append status code
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header"""
