@@ -9,71 +9,51 @@ from utils.scitokens_protect import protect
 app = Flask(__name__)
 
 # Create sample data
-incomes = [{"yolanda" : [{"description": "salary", "amount": 5000}]}]
-expenses = [{"yolanda" : [{"description": "pizza", "amount": 50}]}]
+incomes = {"yolanda": [{"description": "salary", "amount": 5000}]}
+expenses = {"yolanda": [{"description": "pizza", "amount": 50}]}
 
 """ 
 Expense could be accessed without authorization --> no token verification needed
 """
 
+
 @app.route("/expenses/<string:Name>", methods=["GET"])
 def get_expenses(Name):
-    for exp in expenses: 
-        if Name in exp.keys():
-            return jsonify(exp.get(Name))
+    return jsonify(expenses[Name])
 
 
 @app.route("/expenses/<string:Name>", methods=["POST"])
 def add_expense(Name):
-    new_content = request.get_json()
-    exist_user = False
-    for exp in expenses:
-        # server already exists, then add content to the corresponding username
-        if Name in exp.keys():
-            current_list = exp.get(Name)
-            current_list.append(new_content)
-            exp[Name] = current_list
-            exist_user = True
-    # server doesn't exist, then create new server and add the content
-    if exist_user == False:
-        new_list = [new_content]
-        new_dict = {Name: new_list}
-        expenses.append(new_dict)    
+    new_expense = request.get_json()
+    if Name in expenses:
+        expenses[Name].append(new_expense)
+    else:
+        expenses[Name] = [new_expense]
     return "", 204
+
 
 # input should be in the format '[{}, {}]'
 @app.route("/expenses/<string:Name>", methods=["PUT"])
 def replace_expense(Name):
     input_content = request.get_json()
-    replaced_content = input_content[0]
-    new_content = input_content[1]
-    for exp in expenses:
-        # server already exists
-        if Name in exp.keys():
-            current_list = exp.get(Name)
-            # replaced_content doesn't exist, then append new_content
-            if current_list.count(replaced_content) == 0:
-                current_list.append(new_content)
-                exp[Name] = current_list
-            # replaced_content exists, then replace it with new_content
-            else:
-                index = current_list.index(replaced_content)
-                current_list.pop(index)
-                current_list.insert(index, new_content)
-                exp[Name] = current_list
+    print(input_content)
+    old_expense = input_content[0]
+    new_expense = input_content[1]
+    if Name in expenses:
+        if old_expense in expenses[Name]:
+            replace_index = expenses[Name].index(old_expense)
+            expenses[replace_index] = new_expense
+        else:
+            expenses[Name].append(new_expense)
     return "", 204
 
 
 @app.route("/expenses/<string:Name>", methods=["DELETE"])
 def remove_expense(Name):
     delete_content = request.get_json()
-    for exp in expenses:
-        # server already exists
-        if Name in exp.keys():
-            current_list = exp.get(Name)
-            # delete_content exists
-            if current_list.count(delete_content) != 0:
-                current_list.remove(delete_content)
+    if Name in expenses:
+        if delete_content in expenses[Name]:
+            expenses[Name].remove(delete_content)
     return "", 204
 
 
@@ -92,10 +72,11 @@ def handle_auth_error(ex):
 @app.route("/incomes/<string:Name>", methods=["GET"])
 @cross_origin(headers=["Content-Type", "Authorization"])
 @requires_auth
-def get_incomes():
-    scope = "get:" + "/incomes/" + Name 
+def get_incomes(Name):
+    scope = "get:" + "/incomes/" + Name
     if requires_scope(scope):
-        return jsonify(incomes)
+        return jsonify(incomes[Name])
+    return ""
 
 
 @app.route("/incomes/private", methods=["POST"])
