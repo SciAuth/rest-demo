@@ -2,21 +2,16 @@ import scitokens
 from functools import wraps
 from flask import request
 import traceback
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.backends import default_backend
-import base64
-import os
 import inspect
 
-# TODO: #2 Modify decorator to allow dynamic scope in format
-# <action>:/<items' list>/<user>/<item>, e.g. delete:/properties/linh/car
+audience = "https://demo.scitokens.org"
+issuers = ["https://demo.scitokens.org"]
 
 
 def protect(**outer_kwargs):
     def real_decorator(some_function):
         @wraps(some_function)
         def wrapper(*args, **kwargs):
-
             if "Authorization" not in request.headers:
                 headers = {"WWW-Authenticate": "Bearer"}
                 return ("No Authentication Header", 401, headers)
@@ -28,26 +23,21 @@ def protect(**outer_kwargs):
 
             serialized_token = bearer.split()[1]
             try:
-                token = scitokens.SciToken.deserialize(
-                    serialized_token, audience=outer_kwargs["audience"]
-                )
+                token = scitokens.SciToken.deserialize(serialized_token, audience)
             except Exception as e:
                 print(str(e))
                 traceback.print_exc()
                 headers = {"WWW-Authenticate": "Bearer"}
                 return ("Unable to deserialize: %{}".format(str(e)), 401, headers)
 
-            issuers = []
-            if not isinstance(outer_kwargs["issuer"], list):
-                issuers = [outer_kwargs["issuer"]]
-            else:
-                issuers = outer_kwargs["issuer"]
+            # if not isinstance(issuers, list):
+            #     issuers = [issuers]
             success = False
+            permission = outer_kwargs["permission"]
+            path = request.path
             for issuer in issuers:
-                enforcer = scitokens.Enforcer(issuer, audience=outer_kwargs["audience"])
-                authz, path = outer_kwargs["scope"].split(":")
-
-                if enforcer.test(token, authz, path):
+                enforcer = scitokens.Enforcer(issuer, audience)
+                if enforcer.test(token, permission, path):
                     success = True
                     break
 
