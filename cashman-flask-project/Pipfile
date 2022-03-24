@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+authlib = "*"
+requests = "*"
+jose = "*"
+six = "*"
+"flask.ext" = "*"
+flask-cors = "*"
+crypto = "*"
+python-jose = "*"
+python-dotenv = "*"
+scitokens = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9.10"
