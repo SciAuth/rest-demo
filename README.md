@@ -1,4 +1,4 @@
-# RESTful Flask App for Web Token Authorizations Demo
+# RESTful Flask App for Web Token Authorization Demo
 
 A demo app with simple REST APIs that uses [Auth0](https://auth0.com/) and [SciTokens](https://scitokens.org/) to authorize access to the API endpoints
 
@@ -9,7 +9,7 @@ The app provides 3 different REST APIs that allow [standard HTTP method requests
 - `/expenses` is a public endpoint that requires no authorization.
 - `/incomes` is a private endpoint authorized with [Auth0](https://auth0.com/) tokens with static scopes.
 - `/properties` is a private endpoint authorized with [SciTokens](https://scitokens.org/) tokens with dynamic scopes.
-- 
+
 ## SciTokens Demo Overview
 
 ![SciTokens REST API Demo Swimlanes Diagram](swimlanes-scitokens-rest-api-demo.png)
@@ -174,7 +174,8 @@ $ curl --request POST \
   --header 'content-type: application/json' \
   --data '{"client_id":"MXzwZEYbHMFlJZWpfNjSFWttW0xq16JT","client_secret":"DjItEcgIhsFK6ma0rr3dgc-cMcuH1nMfRVSl181VNU3eiMh5_SlV9XcPwIJqb7c5","audience":"https://cashman/api","grant_type":"client_credentials"}'
 ```
-**_We have defined our own API to configure Auth0 authorization following [this tutorial](https://auth0.com/docs/quickstart/backend/python) on Auth0 website._**
+
+_To lear more about how to add and configure Auth0 authorization to a Python API built with Flask, follow [this tutorial](https://auth0.com/docs/quickstart/backend/python) on Auth0 website._
 
 We previously allowed these following scopes from our Auth0 dashboard:
 
