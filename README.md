@@ -1,6 +1,16 @@
-# RESTful Demo App for Web Token Authorizations
+# RESTful Flask App for Web Token Authorizations Demo
 
 A demo app with simple REST APIs that uses [Auth0](https://auth0.com/) and [SciTokens](https://scitokens.org/) to authorize access to the API endpoints
+
+## Description
+
+The app provides 3 different REST APIs that allow [standard HTTP method requests](https://restfulapi.net/http-methods/) `GET`, `POST`, `PUT`, `DELETE`. Each API is built with different authorization scopes:
+
+- `/expenses` is a public endpoint that requires no authorization.
+- `/incomes` is a private endpoint authorized with [Auth0](https://auth0.com/) tokens with static scopes.
+- `/properties` is a private endpoint authorized with [SciTokens](https://scitokens.org/) tokens with dynamic scopes.
+
+**_We have defined our own API to configure Auth0 authorization following [this tutorial](https://auth0.com/docs/quickstart/backend/python) on Auth0 website._**
 
 ## Installation
 
@@ -40,7 +50,7 @@ If you have never developed a Flask application before, high chance you haven't 
 $ pip install Flask
 ```
 
-### Installing Pre-requisites
+### Installing Dependencies
 
 To manage our project's dependencies (with specific versions) without messing up with the system's global packages, we are going to use [`pipenv`](https://github.com/pypa/pipenv) instead of `pip`.
 
@@ -85,21 +95,9 @@ If the script is working properly, you should expect to see a result similar to 
 # * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-## Description
-
-The app provides 3 different REST APIs that allow [standard HTTP method requests](https://restfulapi.net/http-methods/) `GET`, `POST`, `PUT`, `DELETE`. Each API is built with different authorization scopes:
-
-- `/expenses` is a public endpoint that requires no authorization.
-- `/incomes` is a private endpoint authorized with [Auth0](https://auth0.com/) tokens with static scopes.
-- `/properties` is a private endpoint authorized with [SciTokens](https://scitokens.org/) tokens with dynamic scopes.
-
-**_We have defined our own API to configure Auth0 authorization following [this tutorial](https://auth0.com/docs/quickstart/backend/python) on Auth0 website._**
-
-## Getting tokens
-
 ## Usage
 
-There are two ways to test our app, you can use [Postman](https://www.postman.com/) – a platform for building and testing APIs and testing or [`curl`](https://curl.se/) command-line tool. Here we will show how we test our
+To test our APIs, we can use [curl](https://curl.se/) command-line tool via terminal. You can also use [Postman](https://www.postman.com/) – a GUI platform for building and testing APIs.
 
 ### Test `/expenses` API
 
