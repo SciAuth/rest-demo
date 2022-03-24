@@ -9,8 +9,20 @@ The app provides 3 different REST APIs that allow [standard HTTP method requests
 - `/expenses` is a public endpoint that requires no authorization.
 - `/incomes` is a private endpoint authorized with [Auth0](https://auth0.com/) tokens with static scopes.
 - `/properties` is a private endpoint authorized with [SciTokens](https://scitokens.org/) tokens with dynamic scopes.
+- 
+## SciTokens Demo Overview
 
-**_We have defined our own API to configure Auth0 authorization following [this tutorial](https://auth0.com/docs/quickstart/backend/python) on Auth0 website._**
+![SciTokens REST API Demo Swimlanes Diagram](swimlanes-scitokens-rest-api-demo.png)
+
+Diagram source: [https://swimlanes.io/u/kmFDYxo9g](https://swimlanes.io/u/kmFDYxo9g)
+
+## Auth0 Demo Overview
+
+This demo is derived from [https://github.com/auth0-blog/flask-restful-apis](https://github.com/auth0-blog/flask-restful-apis).
+
+![Auth0 REST API Demo Swimlanes Diagram](swimlanes-auth0-rest-api-demo.png)
+
+Diagram source: [https://swimlanes.io/u/ZMHpFBMfZ](https://swimlanes.io/u/ZMHpFBMfZ)
 
 ## Installation
 
@@ -162,6 +174,7 @@ $ curl --request POST \
   --header 'content-type: application/json' \
   --data '{"client_id":"MXzwZEYbHMFlJZWpfNjSFWttW0xq16JT","client_secret":"DjItEcgIhsFK6ma0rr3dgc-cMcuH1nMfRVSl181VNU3eiMh5_SlV9XcPwIJqb7c5","audience":"https://cashman/api","grant_type":"client_credentials"}'
 ```
+**_We have defined our own API to configure Auth0 authorization following [this tutorial](https://auth0.com/docs/quickstart/backend/python) on Auth0 website._**
 
 We previously allowed these following scopes from our Auth0 dashboard:
 
