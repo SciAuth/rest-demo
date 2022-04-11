@@ -12,7 +12,7 @@ The app provides 3 different REST APIs that allow [standard HTTP method requests
 
 ## SciTokens Demo Overview
 
-![SciTokens REST API Demo Swimlanes Diagram](swimlanes-scitokens-rest-api-demo.png)
+![SciTokens REST API Demo Swimlanes Diagram](pics/swimlanes-scitokens-rest-api-demo.png)
 
 Diagram source: [https://swimlanes.io/u/kmFDYxo9g](https://swimlanes.io/u/kmFDYxo9g)
 
@@ -20,7 +20,7 @@ Diagram source: [https://swimlanes.io/u/kmFDYxo9g](https://swimlanes.io/u/kmFDYx
 
 This demo is derived from [https://github.com/auth0-blog/flask-restful-apis](https://github.com/auth0-blog/flask-restful-apis).
 
-![Auth0 REST API Demo Swimlanes Diagram](swimlanes-auth0-rest-api-demo.png)
+![Auth0 REST API Demo Swimlanes Diagram](pics/swimlanes-auth0-rest-api-demo.png)
 
 Diagram source: [https://swimlanes.io/u/ZMHpFBMfZ](https://swimlanes.io/u/ZMHpFBMfZ)
 
@@ -179,7 +179,7 @@ _To lear more about how to add and configure Auth0 authorization to a Python API
 
 We previously allowed these following scopes from our Auth0 dashboard:
 
-![Auth0 scopes](Auth0_scopes.png)
+![Auth0 scopes](pics/Auth0_scopes.png)
 
 Thus, if the above request is successful, you should expect to get something similar to this response:
 
@@ -193,7 +193,7 @@ Thus, if the above request is successful, you should expect to get something sim
 
 To inspect this token, you can decode it at [jwt.io](https://jwt.io/):
 
-![JWT debug](jwt_debug.png)
+![JWT debug](pics/jwt_debug.png)
 
 You can now extract the `access_token `property from the response to make to create a `bearer token` with an `Authorization Header` in your request to obtain authorized access to your API.
 
@@ -217,7 +217,7 @@ To test this endpoint, we first need to ask SciTokens for authorized tokens for 
 
 For example the below token is used to authorize permission for all methods on `/properties/linh` endpoint. However, this token shouldn't work if we use it to request `/properties/yolanda`.
 
-![](scitoken_generator.png)
+![](pics/scitoken_generator.png)
 
 You now can copy the encoded token on the right for your API call.
 
