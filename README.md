@@ -131,37 +131,47 @@ Response
 **POST**
 
 ```bash
-
+$ curl -X POST -H "Content-Type: application/json" -d '{
+    "amount": 10,
+    "description": "ticket"        
+}' http://127.0.0.1:5000/expenses/linh
 ```
 
 Response
 
+There is no terminal output for this command. If you call GET again, you should expect 
 ```
-
+[{"amount":20,"description":"salad"},{"amount":10,"description":"ticket"}]
 ```
 
 **PUT**
 
 ```bash
-
+$ curl -X PUT -H "Content-Type: application/json" -d '[{    "amount": 10,
+    "description": "ticket"}, {"amount": 50, "description": "dinner"}]' http://127.0.0.1:5000/expenses/linh
 ```
 
 Response
 
+There is no terminal output for this command. If you call GET again, you should expect 
 ```
-
+[{"amount":20,"description":"salad"},{"amount":50,"description":"dinner"}]
 ```
 
 **DELETE**
 
 ```bash
-
+$ curl -X DELETE -H "Content-Type: application/json" -d '{
+    "amount": 20,
+    "description": "salad"
+}' http://127.0.0.1:5000/expenses/linh
 ```
 
 Response
 
+There is no terminal output for this command. If you call GET again, you should expect 
 ```
-
+[{"amount":50,"description":"dinner"}]
 ```
 
 ### Test `/incomes` API
@@ -211,6 +221,61 @@ $ curl --request GET \
 [{"amount":1000,"description":"stock interest"}]
 ```
 
+**POST**
+
+```bash
+$ curl --request POST \
+  --url http://127.0.0.1:5000/incomes/linh \
+  -H "Content-Type: application/json" -d '{
+    "amount": 50,
+    "description": "lottery"
+}' \
+  --header 'authorization: Bearer <access_token>'
+```
+
+**Response**
+
+There is no terminal output for this command. If you call GET again, you should expect 
+```
+[{"amount":1000,"description":"stock interest"},{"amount":50,"description":"lottery"}]
+```
+
+**PUT**
+
+```bash
+$ curl --request PUT \
+  --url http://127.0.0.1:5000/incomes/linh \
+  -H "Content-Type: application/json" -d '[{"amount": 50,
+    "description": "lottery"}, {"amount": 1000, "description": "salary"}]' \
+  --header 'authorization: Bearer <access_token>'
+```
+
+**Response**
+
+There is no terminal output for this command. If you call GET again, you should expect
+```
+[{"amount":1000,"description":"stock interest"},{"amount":1000,"description":"salary"}]
+```
+
+**DELETE**
+
+```bash
+$ curl --request DELETE \
+  --url http://127.0.0.1:5000/incomes/linh \
+  -H "Content-Type: application/json" -d '{
+    "amount": 1000,
+    "description": "salary"
+}' \
+  --header 'authorization: Bearer <access_token>'
+```
+
+**Response**
+
+There is no terminal output for this command. If you call GET again, you should expect
+```
+[{"amount":1000,"description":"stock interest"}]
+```
+
 ### Test `/properties` API
 
 To test this endpoint, we first need to ask SciTokens for authorized tokens for our request. Go to https://demo.scitokens.org/ to generate your sample SciTokens. You can edit the payload of the SciToken on the left to serve your tests, such as adding new scope. You can also add multiple scopes for the tokens, separated by a single space.
@@ -238,37 +303,56 @@ $ curl --request GET \
 **POST**
 
 ```bash
-
+$ curl --request POST \
+  --url http://127.0.0.1:5000/properties/linh \
+  -H "Content-Type: application/json" -d '{
+    "amount": 10000,
+    "description": "land"
+}' \
+  --header 'authorization: Bearer <your_sample_token>'
 ```
 
 Response
 
+There is no terminal output for this command. If you call GET again, you should expect
 ```
-
+[{"amount":5000,"description":"truck"},{"amount":70000,"description":"condo"},{"amount":10000,"description":"land"}]
 ```
 
 **PUT**
 
 ```bash
-
+$ curl --request PUT \
+  --url http://127.0.0.1:5000/properties/linh \
+  -H "Content-Type: application/json" -d '[{"amount": 10000,
+    "description": "land"}, {"amount": 8000, "description": "house"}]' \
+  --header 'authorization: Bearer <your_sample_token>'
 ```
 
 Response
 
+There is no terminal output for this command. If you call GET again, you should expect
 ```
-
+[{"amount":5000,"description":"truck"},{"amount":70000,"description":"condo"},{"amount":8000,"description":"house"}]
 ```
 
 **DELETE**
 
 ```bash
-
+$ curl --request DELETE \
+  --url http://127.0.0.1:5000/properties/linh \
+  -H "Content-Type: application/json" -d '{
+    "amount": 8000,
+    "description": "house"
+}' \
+  --header 'authorization: Bearer <your_sample_token>' 
 ```
 
 Response
 
+There is no terminal output for this command. If you call GET again, you should expect
 ```
-
+[{"amount":5000,"description":"truck"},{"amount":70000,"description":"condo"}]
 ```
 
 ## Contributing
