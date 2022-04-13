@@ -355,6 +355,38 @@ There is no terminal output for this command. If you call GET again, you should 
 [{"amount":5000,"description":"truck"},{"amount":70000,"description":"condo"}]
 ```
 
+**Testing Validation**
+
+Since the token allows delete permissions on `/properties/linh` but not `/properties/yolanda`, you will see a `Validation incorrect` error if you try to DELETE `/properties/yolanda`. For example:
+
+```bash
+$ curl --request DELETE \
+  --url http://127.0.0.1:5000/properties/yolanda \
+  -H "Content-Type: application/json" -d '{
+    "amount": 100000,
+    "description": "house"
+}' \
+  --header 'authorization: Bearer <your_sample_token>' 
+```
+
+Response
+
+```
+Validation incorrect: Validator rejected value of 'read:/properties write:/properties update:/properties delete:/properties/linh' for claim 'scope'
+```
+
+You can modify the `scope` value in the token from https://demo.scitokens.org/ to test permissions for different methods and `/properties` paths.
+
+**Testing Expiration**
+
+If the `exp` value in your token is too old, you will see an error response like this:
+
+```
+Unable to deserialize: %Signature has expired
+```
+
+By default, the tokens from https://demo.scitokens.org/ are valid for 10 minutes, so you may see this error if you use the same token for over 10 minutes. In that case, you can get a new token from https://demo.scitokens.org/ and try again.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
