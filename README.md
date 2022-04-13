@@ -147,7 +147,7 @@ There is no terminal output for this command. If you call GET again, you should 
 **PUT**
 
 ```bash
-$ curl -X PUT -H "Content-Type: application/json" -d '[{    "amount": 10,
+$ curl -X PUT -H "Content-Type: application/json" -d '[{"amount": 10,
     "description": "ticket"}, {"amount": 50, "description": "dinner"}]' http://127.0.0.1:5000/expenses/linh
 ```
 
