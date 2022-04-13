@@ -59,7 +59,7 @@ def update_expense(Name):
 def remove_expense(Name):
     expense_to_delete = request.get_json()
     if Name in expenses and expense_to_delete in expenses[Name]:
-        expenses[Name].remove(expense_to_delete)
+            expenses[Name].remove(expense_to_delete)
     return "", 204
 
 
