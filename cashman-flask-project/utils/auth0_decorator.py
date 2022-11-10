@@ -3,7 +3,7 @@ from functools import wraps
 import json
 from os import environ as env
 
-from six.moves.urllib.request import urlopen
+import six
 
 from dotenv import load_dotenv, find_dotenv
 from flask import request, _request_ctx_stack
@@ -64,7 +64,7 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = get_token_auth_header()
-        jsonurl = urlopen("https://" + AUTH0_DOMAIN + "/.well-known/jwks.json")
+        jsonurl = six.moves.urllib.request.urlopen("https://" + AUTH0_DOMAIN + "/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
         unverified_header = jwt.get_unverified_header(token)
         rsa_key = {}

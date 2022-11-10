@@ -1,0 +1,36 @@
+---
+version: "3.0"
+
+services:
+
+  webapp:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: webapp:dev
+    container_name: webapp
+    restart: always
+
+    # Expose the container's web server on a non-standard port so that
+    # it can coexist on the host with other web servers.
+
+    ports:
+    - ${WEBAPP_PORT}:8443
+
+    secrets:
+    - source: httpd-conf
+      target: /etc/httpd/conf.d/httpd.conf
+    - source: tls-crt
+      target: /certs/tls.crt
+    - source: tls-key
+      target: /certs/tls.key
+
+secrets:
+  httpd-conf:
+    file: secrets/httpd.conf
+  tls-crt:
+    file: secrets/tls.crt
+  tls-key:
+    file: secrets/tls.key

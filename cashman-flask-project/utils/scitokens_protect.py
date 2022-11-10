@@ -4,9 +4,8 @@ from flask import request
 import traceback
 import inspect
 
-audience = "https://demo.scitokens.org"
-issuers = ["https://demo.scitokens.org"]
-
+audiences = ["https://demo.scitokens.org", "https://token-issuer.localdomain"]
+issuers = ["https://demo.scitokens.org", "https://token-issuer.localdomain"]
 
 def protect(**outer_kwargs):
     def real_decorator(some_function):
@@ -22,13 +21,26 @@ def protect(**outer_kwargs):
                 return ("Authentication header incorrect format", 401, headers)
 
             serialized_token = bearer.split()[1]
-            try:
-                token = scitokens.SciToken.deserialize(serialized_token, audience)
-            except Exception as e:
-                print(str(e))
-                traceback.print_exc()
+            myAudience = None
+            parsedToken = None
+            exception = None
+            exeTrace = ""
+            for audience in audiences:
+                try:
+                    parsedToken = scitokens.SciToken.deserialize(serialized_token, audience)
+                    myAudience = audience
+                    break
+                except Exception as e:
+                    exception = e
+                    exeTrace = traceback.format_exc()
+                    continue
+            
+            # Check if found valid audience
+            if not myAudience:
+                print(str(exception))
+                traceback.print_exc() # TODO: Not too sure how to handle this. Maybe format_exc?
                 headers = {"WWW-Authenticate": "Bearer"}
-                return ("Unable to deserialize: %{}".format(str(e)), 401, headers)
+                return ("Unable to deserialize: %{}".format(str(exception)), 401, headers)
 
             # if not isinstance(issuers, list):
             #     issuers = [issuers]
@@ -36,8 +48,8 @@ def protect(**outer_kwargs):
             permission = outer_kwargs["permission"]
             path = request.path
             for issuer in issuers:
-                enforcer = scitokens.Enforcer(issuer, audience)
-                if enforcer.test(token, permission, path):
+                enforcer = scitokens.Enforcer(issuer, myAudience)
+                if enforcer.test(parsedToken, permission, path):
                     success = True
                     break
 
@@ -51,7 +63,7 @@ def protect(**outer_kwargs):
 
             # If the function takes "token" as an argument, send the token
             if "token" in inspect.getfullargspec(some_function).args:
-                kwargs["token"] = token
+                kwargs["token"] = parsedToken
 
             return some_function(*args, **kwargs)
 
