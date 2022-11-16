@@ -32,16 +32,15 @@ COPY etc /etc/
 
 ## Install the Flask and WSGI applications.
 
-
-# Docker
-COPY docker-compose.yaml Dockerfile /srv/
-
 # Cashman
-COPY cashman utils /srv/cashman/
+COPY cashman /srv/cashman
+COPY utils /srv/utils
 
 # Dependencies
 COPY requirements.txt Pipfile Pipfile.lock /srv/
-RUN  ${PY_EXE} -m pip install --no-cache-dir -r /srv/requirements.txt
 
 # Main WSGI app
 COPY wsgi.py /srv/
+
+WORKDIR /srv
+RUN  ${PY_EXE} -m pip install --no-cache-dir -r requirements.txt

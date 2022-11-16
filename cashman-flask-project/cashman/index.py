@@ -1,12 +1,12 @@
 """Python Flask RESTful APIs with Auth0 & SciAuth integration
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from flask_cors import cross_origin
 from utils.auth0_decorator import requires_auth, requires_scope
 from utils.AuthError import AuthError
 from utils.scitokens_protect import protect
 
-app = Flask(__name__)
+app = Blueprint("app_bp", __name__)
 
 # Create sample data
 incomes = {

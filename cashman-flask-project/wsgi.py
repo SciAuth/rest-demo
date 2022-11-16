@@ -1,10 +1,23 @@
-#!/usr/bin/env python3
-"""
-Web application.
-"""
+from flask import Flask
 
-import cashman.index
-application = cashman.index.app
+from cashman import index
 
-# if __name__ == "__main__":
-#     application.run()
+def load_config(app: Flask) -> None:
+    pass
+
+def register_blueprints(app: Flask) -> None:
+    app.register_blueprint(index.app)
+
+
+def create_app() -> Flask:
+    app = Flask(
+        __name__.split(".", maxsplit=1)[0],        
+    )
+
+    load_config(app)
+    register_blueprints(app)
+
+    return app
+
+
+application = create_app()
