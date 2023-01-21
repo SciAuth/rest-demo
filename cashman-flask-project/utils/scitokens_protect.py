@@ -27,6 +27,10 @@ def protect(**outer_kwargs):
             exeTrace = ""
             for audience in audiences:
                 try:
+                    # method 1: insecure -> True
+                    # method 2: public_key -> Get public key and test in deserialize
+                    # + normally would be fetched from token issuer, but just code in
+                    # In configuration for demo, check public_key as well
                     parsedToken = scitokens.SciToken.deserialize(serialized_token, audience)
                     myAudience = audience
                     break
