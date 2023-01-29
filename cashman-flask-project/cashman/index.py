@@ -6,7 +6,11 @@ from utils.auth0_decorator import requires_auth, requires_scope
 from utils.AuthError import AuthError
 from utils.scitokens_protect import protect
 
-app = Blueprint("app_bp", __name__)
+# NOTE: Toggle between the following two `app = ...` lines for different purposes:
+## - Blueprint(...): Building a Docker image
+## - Flask(...): Running the demo app directly according to the documentation
+# app = Blueprint("app_bp", __name__)
+app = Flask(__name__)
 
 # Create sample data
 incomes = {

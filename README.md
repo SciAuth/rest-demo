@@ -55,6 +55,8 @@ $ flask --version
 # Werkzeug
 ```
 
+Note: You can use either `python3` or `python`, `pip3` or `pip` in the commands above.
+
 If you have never developed a Flask application before, high chance you haven't had it yet. The installation is quite simple
 
 ```bash
@@ -84,14 +86,28 @@ You can manually install each of them or run:
 $ pipenv install --dev
 ```
 
+Note: You might need to specify the path to your Python installation. If such an error message arises, try running:
+```bash
+$ pipenv --python path/to/python install --dev
+```
+where `path/to/python` is the path to your Python installation. Depending on your Python version, this may or may not fail (Please try proceeding to the next steps, a warning or error message from `pipenv` does not necessarily imply failure). In that case, consider downloading Python version `3.9.10` specifically. 
+
 ## Running locally
 
 To run this app on your local server, direct to the `cashman-flask-project` folder to facilitate the start up of our application:
 
+#### For MacOS:
 ```bash
 $ cd cashman-flask-project
 $ chmod +x bootstrap.sh
 $ ./bootstrap.sh
+```
+
+#### For Windows (Use [Git Bash](https://git-scm.com/downloads)):
+Note: If you are using `python` instead of `python3`, edit line 5 of the `bootstrap.sh` file to `source $(python -m pipenv --venv)/bin/activate` before running the commands above.
+```bash
+$ cd cashman-flask project
+$ sh bootstrap.sh
 ```
 
 This will first defines the main script (`index.py`) to be executed by Flask, then activate a virtual environment by `pipenv` that locates exact versions of our dependencies, then run our Flask app.
@@ -386,6 +402,9 @@ Unable to deserialize: %Signature has expired
 ```
 
 By default, the tokens from https://demo.scitokens.org/ are valid for 10 minutes, so you may see this error if you use the same token for over 10 minutes. In that case, you can get a new token from https://demo.scitokens.org/ and try again.
+
+## Developer Notes:
+For building a Docker image of the REST Demo App, first visit `index.py` and follow the instructions at the top. Then, create a Docker Image normally.
 
 ## Contributing
 
